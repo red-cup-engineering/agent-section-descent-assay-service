@@ -1,0 +1,30 @@
+name: Repository first-visit audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  frontdoor:
+    uses: red-cup-engineering/repository-norms/.github/workflows/frontdoor.yml@e8e19fcb2450ed679b8b61f7bc82cff59e683b91
+
+  source-and-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '24'
+      - name: Parse assay source and test file
+        run: node --check src/assay.mjs && node --check test/assay.test.mjs
+      - name: Resolve the declared public package dependencies
+        run: npm install --ignore-scripts --no-package-lock --no-audit --no-fund --fetch-retries=1 --fetch-timeout=15000
+      - name: Execute the existing behavioral tests
+        run: npm test

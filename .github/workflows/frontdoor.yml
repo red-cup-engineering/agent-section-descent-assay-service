@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   frontdoor:
-    uses: red-cup-engineering/repository-norms/.github/workflows/frontdoor.yml@c9bca286d864b617c8b66e259d317f2b44581a69
+    uses: red-cup-engineering/repository-norms/.github/workflows/frontdoor.yml@e8e19fcb2450ed679b8b61f7bc82cff59e683b91
 
   source-and-tests:
     runs-on: ubuntu-24.04
